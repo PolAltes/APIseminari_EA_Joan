@@ -6,7 +6,8 @@ import {
     getAllUsersHandler,
     getUserByIdHandler,
     updateUserHandler,
-    deleteUserHandler
+    deleteUserHandler,
+    loginUserHandler
 } from '../users/user_controller.js';
 
 const router = express.Router();
@@ -54,6 +55,8 @@ router.get('/main', saveMethodHandler);
  *                 type: integer
  *               email:
  *                 type: string
+ *               password:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Usuario creado exitosamente
@@ -84,6 +87,8 @@ router.post('/users', createUserHandler);
  *                    type: integer
  *                  email:
  *                     type: string
+ *                  password:
+ *                     type: string
  */
 router.get('/users', getAllUsersHandler);
 
@@ -109,11 +114,13 @@ router.get('/users', getAllUsersHandler);
  *             schema:
  *               type: object
  *               properties:
- *                  name:
+ *                 name:
  *                   type: string
  *                 age:
  *                   type: integer
  *                 email:
+ *                    type: string
+ *                 password:
  *                    type: string
  *       404:
  *         description: Usuario no encontrado
@@ -147,6 +154,8 @@ router.get('/users/:id', getUserByIdHandler);
  *                   type: integer
  *                 email:
  *                    type: string
+ *                 password:
+ *                    type: string
  *     responses:
  *       200:
  *         description: Usuario actualizado exitosamente
@@ -176,5 +185,47 @@ router.put('/users/:id', updateUserHandler);
  *         description: Usuario no encontrado
  */
 router.delete('/users/:id', deleteUserHandler);
+
+/**
+ * @openapi
+ * /api/users:
+ *   get:
+ *     summary: Login d'un usuari
+ *     description: Login d'un usuari en funció del username i el password
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: login fet
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                 age:
+ *                   type: integer
+ *                 email:
+ *                   type: string
+ *                 password:
+ *                   type: string
+ *        404:
+ *          description: Usuari no trobat
+ *        500:
+ *          description: Error el sistema
+ */
+router.get('/users', loginUserHandler);
 
 export default router;

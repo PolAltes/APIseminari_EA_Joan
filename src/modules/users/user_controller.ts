@@ -1,5 +1,5 @@
 // src/controllers/user_controller.ts
-import { saveMethod, createUser, getAllUsers, getUserById, updateUser, deleteUser } from '../users/user_service.js';
+import { saveMethod, createUser, getAllUsers, getUserById, updateUser, deleteUser, logIn } from '../users/user_service.js';
 
 import express, { Request, Response } from 'express';
 
@@ -49,5 +49,18 @@ export const deleteUserHandler = async (req: Request, res: Response) => {
         res.json(data);
     } catch (error: any) {
         res.status(500).json({ message: error.message });
+    }
+};
+
+export const loginUserHandler = async (req: Request, res: Response) => {
+    const {name,password} = req.body;
+    try{
+        const user = await logIn(name,password);
+        if(!user){
+            return res.status(401).json({message:"Error credencials"});
+        }
+        res.status(200).json({message:"Login fet"});
+    }catch(error){
+        res.status(500).json({message:"Error del servidor: ",error});
     }
 };
